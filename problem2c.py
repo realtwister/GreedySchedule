@@ -1,14 +1,18 @@
 import sys;
 from collections import OrderedDict;
 
-def printSchedule(due):
+def printSchedule(due, error=False):
 	print();
 	print('\\begin{tabular}{r|'+'c'*(len(due))+'}');
 	D='Day&';
 	Du='Due day&';
 	for i in range(len(due)):
-		D+=str(i+1)+'&';
-		Du+=str(due[i])+'&';
+		if(error and i==len(due)-1):
+			D+='\\textbf{\\textcolor{red}{'+str(i+1)+'}}&';
+			Du+='\\textbf{\\textcolor{red}{'+str(due[i])+'}}&';
+		else:
+			D+=str(i+1)+'&';
+			Du+=str(due[i])+'&';
 	print(D[:-1]+'\\\\ \\hline');
 	print(Du[:-1]+'\\\\');
 	print('\\end{tabular}');
@@ -26,7 +30,7 @@ def isIndependent(schedule):
 		due.append(i);
 		if n>i:
 			#This is not independent
-			printSchedule(due);
+			printSchedule(due,True);
 			print('\\verb|There exists no feasible schedule and we neglect the task.|');
 			return False;
 		#Go to next day
